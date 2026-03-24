@@ -25,7 +25,7 @@ It requires **no backend server, no database, and no complex API**. The entire p
 
 ## Getting Started
 
-A preview of the app is hosted as a [Github Page](shashotonur.github.io/webfs) where a sample `files/` firectory is packed against seven passwords in the `files/.passwd` file.
+A preview of the app is hosted as a [Github Page](https://shashotonur.github.io/webfs/) where a sample `files/` firectory is packed against seven passwords in the `files/.passwd` file.
 
 ### 1. Requirements
 To pack your files, you need Python 3 and the `cryptography` package:
