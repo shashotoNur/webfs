@@ -21,6 +21,8 @@
 
 <body>
     <div class="app">
+        <!-- Sidebar Backdrop for Mobile -->
+        <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
 
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -51,6 +53,21 @@
 
         <!-- Main Preview Area -->
         <main class="preview">
+            <!-- Mobile Header (Hidden on Desktop) -->
+            <div class="mobile-header">
+                <button id="sidebarToggleBtn" class="btn-icon" aria-label="Toggle Menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="mobile-title">
+                    <span class="icon" data-icon="logo"></span>
+                    <span>WebFS</span>
+                </div>
+            </div>
+
             <div id="previewContent">
                 <div class="empty-state">
                     <span class="icon" data-icon="lockedBig"></span>
@@ -80,12 +97,12 @@
                 <div class="unlock-panel" id="unlockPanel">
                     <div class="input-group">
                         <input type="password" id="password" placeholder="Enter Vault Password">
-                        <span class="icon" data-icon="eyeSvg"></span>
+                        <span class="icon" data-icon="eyeSvg" id="togglePasswordBtn"></span>
                     </div>
 
                     <div style="display: flex; gap: 8px">
                         <button class="btn-primary" id="unlockBtn" style="flex: 1; justify-content: center;">Unlock Vault</button>
-                        
+
                         <button id="lockAllBtn" class="btn-secondary" style="display: none; flex: 1; justify-content: center; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">
                             <span class="icon" data-icon="lockRed"></span>
                             Lock All Vaults

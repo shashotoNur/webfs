@@ -5,15 +5,15 @@
     --bg-surface-hover: #27272a;
     --border: rgba(255, 255, 255, 0.08);
     --border-hover: rgba(255, 255, 255, 0.15);
-    
+
     --text-main: #ededed;
     --text-muted: #a1a1aa;
-    
+
     --accent: #ededed;
     --accent-fg: #09090b;
     --accent-hover: #ffffff;
     --success: #10b981;
-    
+
     --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 12px;
@@ -606,4 +606,122 @@ th, td {
     border-radius: var(--radius-sm);
     font-size: 13px;
     color: var(--text-main);
+}
+
+/* --- Insert existing CSS above here --- */
+
+/* Responsive Off-Canvas Additions */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mobile-header {
+    display: none; /* Hidden by default on Desktop */
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 20;
+}
+
+.mobile-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-main);
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    margin-left: -6px; /* Offset padding to align visually */
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.btn-icon:hover {
+    background: var(--bg-surface-hover);
+}
+
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -280px; /* Hidden off canvas initially */
+        top: 0;
+        bottom: 0;
+        height: 100vh;
+        z-index: 40;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.open {
+        transform: translateX(280px); /* Slide in */
+        box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+
+    #previewContent {
+        padding: 24px 16px;
+        height: calc(100vh - 57px); /* Compensate for mobile header */
+        width: 90vw;
+    }
+
+    .preview-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .preview-header .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tree-item {
+        padding: 10px 12px; /* Thicker touch targets */
+        font-size: 14px;
+    }
+
+    .modal-card {
+        padding: 20px;
+        margin: 16px;
+    }
+
+    /* Wrap tables to prevent breaking out of layout */
+    .markdown-body table,
+    .docx-body table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .pdf-wrapper,
+    .media-container {
+        height: calc(100vh - 220px);
+    }
 }

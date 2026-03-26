@@ -25,15 +25,25 @@ It requires **no backend server, no database, and no complex API**. The entire p
 
 ## Getting Started
 
-A preview of the app is hosted as a [Github Page](https://shashotonur.github.io/webfs/) where a sample `files/` firectory is packed against seven passwords in the `files/.passwd` file.
+A preview of the app is hosted as a [Github Page](https://shashotonur.github.io/webfs/) where a sample `files/` directory is packed against seven passwords in the `files/.passwd` file.
 
-### 1. Requirements
+### Requirements
+For your own WebFS setup, you would need git.
+
 To pack your files, you need Python 3 and the `cryptography` package:
 ```bash
 pip install cryptography
 ```
 
-### 2. Define Your Vaults (`.passwd`)
+### Change ownership
+
+Create a github account if you don't have one and set up ssh keys.
+
+Fork the original repo: `https://github.com/shashotoNur/webfs`
+
+Clone it: `git clone git@github.com:<your_username>/webfs.git`
+
+### Define Your Vaults (`.passwd`)
 In the root of the directory you want to encrypt (e.g., `./files`), create a `.passwd` file. This file dictates which directories belong to which encrypted vault. Rules cascade downwards unless overridden.
 
 *Example `.passwd` file:*
@@ -47,8 +57,9 @@ In the root of the directory you want to encrypt (e.g., `./files`), create a `.p
 # these lines will not be read by the packer script)
 ./dir1/subdir/ dev_guides11_lambda
 ```
+There is already a sample `files/` directory with a `files/.passwd` file which has been packed as an example in the blobs directory. They can be read via the Web UI using the passwords from the `files/.passwd` file. You should remove the `files/` directory as it is just there to demonstrate usage: `rm -rf files`.
 
-### 3. Pack the Files
+### Pack the Files
 Run the packer script, pointing it to your target directory.
 *Note: The packer expects normalized filenames, as it may cause problems with complex names.*
 
@@ -56,14 +67,27 @@ Run the packer script, pointing it to your target directory.
 python scripts/packer.py ./path/to/target/directory
 ```
 This will generate the encrypted blobs inside the `blobs/` directory, alongside a `blobs.json` manifest.
-There is already a sample `files/` directory with a `files/.passwd` file which has been packed as an example in the blobs directory. They can be read via the Web UI using the passwords from the `files/.passwd` file.
 
-### 4. Serve the Application
+### Serve the Application
 You can test it locally using Python's built-in HTTP server:
 ```bash
 python scripts/server.py -p 5000
 ```
 Navigate to `http://127.0.0.1:5000/webfs` in your browser. Enter one of the passwords defined in your `files/.passwd` file to decrypt that specific vault. Enter another password to merge a second vault into your current session.
+
+### Deploy
+Once verified your files are properly being served, you can stage the changes, commit them and push to Github:
+```bash
+git add .
+git commit -m "Files updated"
+git push -u origin main
+```
+You can serve it by enabling Github pages:
+- Go to `https://github.com/<your_username>/webfs/settings/pages`.
+- Change the branch in the drop down menu from `None` to `main` and click `Save`.
+- Github will build your webpage within a few minutes and deploy it at `your_username.github.io/webfs`.
+
+To update your files, just pack -> stage -> commit -> push. And your files will be ready in a few minutes.
 
 ---
 

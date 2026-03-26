@@ -9,6 +9,11 @@ const manageVaultsBtn = document.getElementById("manageVaultsBtn");
 const closeModalBtn = document.getElementById("closeModalBtn");
 const lockAllBtn = document.getElementById("lockAllBtn");
 
+// Mobile Sidebar specific elements
+const sidebar = document.querySelector('.sidebar');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+
 let basePath = window.location.pathname;
 if (basePath.endsWith('.html')) {
     basePath = basePath.substring(0, basePath.lastIndexOf('/'));
@@ -17,6 +22,22 @@ if (!basePath.endsWith('/')) {
     basePath += '/';
 }
 const baseURL = window.location.origin + basePath;
+
+// Mobile Sidebar Logic
+window.closeSidebar = function() {
+    sidebar.classList.remove('open');
+    sidebarBackdrop.classList.remove('active');
+}
+
+window.openSidebar = function() {
+    sidebar.classList.add('open');
+    sidebarBackdrop.classList.add('active');
+}
+
+if (sidebarToggleBtn && sidebarBackdrop) {
+    sidebarToggleBtn.addEventListener('click', window.openSidebar);
+    sidebarBackdrop.addEventListener('click', window.closeSidebar);
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
     if (!('serviceWorker' in navigator)) {
@@ -251,6 +272,11 @@ function renderTree(tree, parent = document.getElementById("fileTree"), base = "
                 document.querySelectorAll('.tree-item').forEach(el => el.classList.remove('active'));
                 div.classList.add('active');
                 openFile(path);
+
+                // Close sidebar automatically on mobile
+                if (window.innerWidth <= 768 && typeof window.closeSidebar === 'function') {
+                    window.closeSidebar();
+                }
             }
         } else {
             div.className = "folder-container"
@@ -311,7 +337,18 @@ async function openFile(path){
         if(imageExt.includes(extension)){
             const blob = await res.blob()
             const url = URL.createObjectURL(blob)
-            preview.innerHTML = `<div class="media-container"><img id="previewImage" src="${url}"></div>`
+            preview.innerHTML = `
+                <div class="preview-header">
+                    <span class="file-name">${escapeHTML(filename)}</span>
+                    <a class="btn-secondary" href="${url}" download="${escapeHTML(filename)}">
+                        ${Icons.download}
+                        Download Image
+                    </a>
+                </div>
+                <div class="media-container">
+                    <img id="previewImage" src="${url}">
+                </div>
+            `
             new Viewer(document.getElementById('previewImage'))
             return
         }
